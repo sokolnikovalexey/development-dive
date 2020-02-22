@@ -13,12 +13,16 @@ var ball = {
     height: 50,
     color: "red",
     xDirection: 5,
-    yDirection: 5
+    yDirection: 5,
+    speed: 5
 }
 
 function init() {
     var canvas = document.getElementById("canvas");
     canvasContext = canvas.getContext("2d");
+
+    canvas.addEventListener("mousemove", onCanvasMouseMove);
+    document.addEventListener("keydown", onDocumentKeyDown);
 
     setInterval(play, game.fps); 
 }
@@ -38,9 +42,6 @@ function update() {
     if (ball.x < 0 || (ball.x + ball.width > game.width)) {
         ball.xDirection = -ball.xDirection;
     }
-
-    ball.x = ball.x + ball.xDirection;
-    ball.y = ball.y + ball.yDirection;
 }
 
 function draw() {
@@ -49,3 +50,15 @@ function draw() {
     canvasContext.fillRect(ball.x, ball.y, ball.width, ball.height); 
 }
 
+function onCanvasMouseMove(event) {
+    ball.x = event.layerX;
+    ball.y = event.layerY;
+}
+
+function onDocumentKeyDown(event) {
+    if (event.key == "ArrowUp") {
+        ball.yDirection = -ball.speed;
+    } else if (event.key == "ArrowDown") {
+        ball.yDirection = ball.speed;
+    }
+}
