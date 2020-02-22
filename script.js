@@ -3,7 +3,8 @@ var canvasContext = null;
 var game = {
     fps: 1000/60,
     width: 480,
-    height: 320
+    height: 320,
+    background: new Image()
 }
 
 var ball = {
@@ -21,10 +22,14 @@ function init() {
     var canvas = document.getElementById("canvas");
     canvasContext = canvas.getContext("2d");
 
+    game.background.src = "img/bg.jpg"
+
     canvas.addEventListener("mousemove", onCanvasMouseMove);
     document.addEventListener("keydown", onDocumentKeyDown);
 
-    setInterval(play, game.fps); 
+    game.background.onload = function(){
+        setInterval(play, game.fps); 
+    }       
 }
 
 function play() {
@@ -46,8 +51,10 @@ function update() {
 
 function draw() {
     canvasContext.clearRect(0, 0, game.width, game.height);
-    canvasContext.fillStyle = ball.color;
-    canvasContext.fillRect(ball.x, ball.y, ball.width, ball.height); 
+    canvasContext.drawImage(game.background, 0, 0, game.width, game.height);  //Рисуем фон
+
+    canvasContext.strokeStyle = ball.color;
+    canvasContext.strokeRect(ball.x, ball.y, ball.width, ball.height); 
 }
 
 function onCanvasMouseMove(event) {
